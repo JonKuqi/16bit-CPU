@@ -1,6 +1,7 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
+
+
+//E pa testuar, me shume gjasa gabimi ketu!
 
 
 
@@ -71,7 +72,7 @@ assign mux_ALU = (ALUSrc == 1'b1) ? Zgjerimi : readData2;
 ALUControl AC(ALUOp, instruction[1:0], instruction[15:12], ALUCtrl); 
 
 //inicializimi i ALU (T7, T10, T19[3], T19[2], T19[1:0], T20, T11, T21, T22)
-ALU16 ALU(readData1, mux_ALU, 0, ALUCtrl[3], ALUCtrl[2:0], zerof, ALU_Out, overflow, carryout);
+ALU16 ALU(readData1, mux_ALU, 0, ALUCtrl[3:0], zerof, ALU_Out, overflow, carryout);
 
 //inicializimi i Data Memory (T11, T8, CU_OUT_x, CU_OUT_x, CPU_IN_1, T13) 
 DataMemory DM(ALU_Out, readData2, MemWrite, MemRead, Clock, memToMux);
@@ -87,7 +88,7 @@ assign beqAddress = pc4 + shifter2beq;
 
 //T3 - Teli qe del nga Mux M4 ne foto qe kontrollon nese kemi BEQ apo PC+4
 assign pcbeq = (andMuxBranch == 1'b1) ? beqAddress : pc4;
-
+assign pc_next = pcbeq;
 
 
 //Teli D_OUT_1 qe i dergohet CU

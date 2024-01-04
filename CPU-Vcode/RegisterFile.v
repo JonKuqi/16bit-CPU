@@ -14,7 +14,7 @@ output wire[15:0] ReadRS,
 output wire[15:0] ReadRT
     );
     
-reg[15:0] Registers[15:0];
+reg[15:0] Registers[3:0];
 //16 regjista me ka 16 bit numri i bitve mas reg
 
 //Reseto te gjithe regjistrat ne 0

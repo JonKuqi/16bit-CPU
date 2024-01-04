@@ -10,7 +10,7 @@ input wire Clock,
 output wire[15:0] ReadData
 );
 
-reg[7:0] dataMem[127:0];
+reg[7:0] dataMem[0:127];
 
 initial
 $readmemb("dataMemory.mem", dataMem);

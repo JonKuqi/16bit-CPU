@@ -1,6 +1,8 @@
 `timescale 1ns / 1ps
 
-/
+//PA testuar!!
+
+
 
 //Hyrje ne CPU - CLock CPU_IN_1
 module CPU(input Clock);
