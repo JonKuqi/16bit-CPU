@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-
+//Perfunduar si komponente, nuk eshte testuar?
 
 module CU(
     input [3:0] OPCODE, //HYRJA NGA D_OUT_1
@@ -17,7 +17,7 @@ module CU(
     
 always @ (OPCODE)
 begin
-//dekderi
+//dekoderi
 case(OPCODE)
 6'b0000: //PER AND, OR, XOR
     begin
@@ -27,8 +27,8 @@ case(OPCODE)
 	RegWrite = 1;
 	MemRead = 0;
 	MemWrite = 0;
-	AluOp[0] = 1;
-    AluOp[1] = 0;	
+	AluOp[1] = 1;
+    AluOp[0] = 0;	
 	Branch =0;
     end
 	
@@ -40,8 +40,8 @@ case(OPCODE)
 	RegWrite = 1;
 	MemRead = 0;
 	MemWrite = 0;
-	AluOp[0] = 1;
-    AluOp[1] = 0;	
+	AluOp[1] = 1;
+    AluOp[0] = 0;	
 	Branch =0;
     end
 	
@@ -53,8 +53,8 @@ case(OPCODE)
 	RegWrite = 1;
 	MemRead = 0;
 	MemWrite = 0;
-	AluOp[0] = 1;
-    AluOp[1] = 1;	
+	AluOp[1] = 1;
+    AluOp[0] = 1;	
 	Branch =0;
     end
 	
@@ -66,8 +66,8 @@ case(OPCODE)
 	RegWrite = 1;
 	MemRead = 0;
 	MemWrite = 0;
-	AluOp[0] = 1;
-    AluOp[1] = 1;	
+	AluOp[1] = 1;
+    AluOp[0] = 1;	
 	Branch =0;
     end	
 	
@@ -79,9 +79,57 @@ case(OPCODE)
 	RegWrite = 1;
 	MemRead = 0;
 	MemWrite = 0;
-	AluOp[0] = 1;
-    AluOp[1] = 1;	
+	AluOp[1] = 1;
+    AluOp[0] = 1;	
 	Branch =0;
+    end	
+	
+6'b1100: //LW
+    begin
+    RegDst = 0;
+    AluSrc = 1;
+	MemToReg = 1;
+	RegWrite = 1;
+	MemRead = 1;
+	MemWrite = 0;
+	AluOp[1] = 0;
+    AluOp[0] = 0;	
+	Branch =0;
+    end	
+6'b1101: //SW
+    begin
+    RegDst = 0;
+    AluSrc = 1;
+	MemToReg = 0;
+	RegWrite = 0;
+	MemRead = 0;
+	MemWrite = 1;
+	AluOp[1] = 0;
+    AluOp[0] = 0;	
+	Branch =0;
+    end	
+6'b1111: //BEQ
+    begin
+    RegDst = 0;
+    AluSrc = 0;
+	MemToReg = 0;
+	RegWrite = 0;
+	MemRead = 0;
+	MemWrite = 0;
+	AluOp[1] = 0;
+    AluOp[0] = 1;	
+	Branch = 1;
+6'b0010: //SLL dhe SRA
+    begin
+    RegDst = 1;
+    AluSrc = 0;
+	MemToReg = 0;
+	RegWrite = 1;
+	MemRead = 0;
+	MemWrite = 0;
+	AluOp[1] = 1;
+    AluOp[0] = 0;	
+	Branch = 0;
     end	
 endcase
 

@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+//Komponenta e kryer dhe e testuar, file i testimit me poshte.
 
 module DataMemory(
 input wire[15:0] Address,
@@ -8,7 +10,7 @@ input wire Clock,
 output wire[15:0] ReadData
 );
 
-reg[3:0] dataMem[127:0];
+reg[7:0] dataMem[127:0];
 
 initial
 $readmemb("dataMemory.mem", dataMem);
@@ -20,10 +22,8 @@ begin
     if(MemWrite) 
         begin
             //bigEndian
-            dataMem[Address + 16'd0] <= WriteData[15:12];
-            dataMem[Address + 16'd1] <= WriteData[11:8];
-            dataMem[Address + 16'd2] <= WriteData[7:4];
-            dataMem[Address + 16'd3] <= WriteData[3:0];
+            dataMem[Address + 32'd0] <= WriteData[15:8];
+            dataMem[Address + 32'd1] <= WriteData[7:0];
            end
 end
 
@@ -35,11 +35,8 @@ $writememb("dataMemory.mem", dataMem);
 end
 
  
- assign ReadData[15:12] = dataMem[Address + 16'd0];
- assign ReadData[11:8] = dataMem[Address + 16'd1];
- assign ReadData[7:4] = dataMem[Address + 16'd2];
- assign ReadData[3:0] = dataMem[Address + 16'd3];
-
+ assign ReadData[15:8] = dataMem[Address + 32'd0];
+ assign ReadData[7:0] = dataMem[Address + 32'd1];
 endmodule
 
 

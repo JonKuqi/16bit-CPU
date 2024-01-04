@@ -1,13 +1,13 @@
 `timescale 1ns / 1ps
 
-
+//komponenta eshte perfuduar dhe testuar, file testimit me poshte.
 
 module InstructionMemory(
 input wire[15:0] PCAddress,
 output wire[15:0] Instruction);
 
 //deklarohen sa adresa i kemi dhe sa bitshe jane ato adresa
-reg[3:0] instrMem[127:0];
+reg[7:0] instrMem[127:0];
 //me ka 4 bit
 //lexohen nga jashte
 initial
@@ -16,11 +16,8 @@ $readmemb("instructionMemory.mem", instrMem);
 
 
 //dekoder
-  assign Instruction[15:12] = instrMem[PCAddress];
-  assign Instruction[11:8] = instrMem[PCAddress + 16'd1];
-  assign Instruction[7:4] = instrMem[PCAddress + 16'd2];
-assign Instruction[3:0] = instrMem[PCAddress + 16'd3];
-
+  assign Instruction[15:8] = instrMem[PCAddress];
+  assign Instruction[7:0] = instrMem[PCAddress + 32'd1];
 
 endmodule
 

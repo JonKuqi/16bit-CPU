@@ -12,8 +12,10 @@ module ALU16(
     output Overflow,
     output CarryOut
     );
-    //CIN edhe Bin gjeth bashk po shkojn edhe e bajm ni bNegate t dyjat me ni ven
+	
+//CIN edhe Bin gjeth bashk po shkojn edhe e bajm ni bNegate t dyjat me ni ven
 // less vjen nga set
+
     wire [14:0] COUT;
     //LIDH 16 ALU 1-biteshe
 	//pasi cout varet nga qdo alu, less ne qdo alu brenda eshte zero 
@@ -44,11 +46,14 @@ assign Zero = ~(Result[0] | Result[1] |
                 Result[12] | Result[13] | 
                 Result[14] | Result[15] ); 
                     
-    assign Overflow = COUT[14] ^ CarryOut;
+assign Overflow = COUT[14] ^ CarryOut;
 	  
   //Overflow nese dy numra pozitiv jen mledh edhe ka dalnegativ, edhe kur dy numra negativ jen mledh ka dal pozitiv, veq do dy raste si veqori t komplementit te 2shit
   
  //Carry in dhe carry ou nuk perputhen pra kemi overflow
+ 
+ //ideja, shamt behet si hyrje edhe ekziston ni case: per i cili merr ALUCtrl dhe nese esshte i njejte me ge SLL dhe SRA 
+ //mbishkruhet rezultati
     
     
 endmodule
