@@ -108,7 +108,7 @@ case(OPCODE)
 	MemWrite = 1;
 	AluOp[1] = 0;
     AluOp[0] = 0;	
-	Branch =0;
+	Branch = 0;
     end	
 4'b1111: //BEQ
     begin
@@ -125,7 +125,7 @@ case(OPCODE)
 4'b0010: //SLL dhe SRA
     begin
     RegDst = 1;
-    AluSrc = 0;
+    AluSrc = 1'bX;
 	MemToReg = 0;
 	RegWrite = 1;
 	MemRead = 0;
@@ -168,7 +168,6 @@ module Test_CU();
       #5 opcode=4'b1101;
       #5 opcode=4'b1111;
       #5 opcode=4'b0010;
-      
       #5 $finish;
     end
   

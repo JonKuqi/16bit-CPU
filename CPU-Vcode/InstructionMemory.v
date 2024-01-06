@@ -17,7 +17,7 @@ $readmemb("instructionMemory.mem", instrMem);
 
 //dekoder
   assign Instruction[15:8] = instrMem[PCAddress];
-  assign Instruction[7:0] = instrMem[PCAddress + 32'd1];
+  assign Instruction[7:0] = instrMem[PCAddress + 16'd1];
 
 endmodule
 
@@ -33,8 +33,6 @@ module InstructionMemory_Test();
     $monitor("PC=%b, Instruction=%b", PC, Instruction);
   initial
     begin
-      $dumpfile("dump.vcd");
-      $dumpvars;
       #0 PC=16'd0;
     end
   

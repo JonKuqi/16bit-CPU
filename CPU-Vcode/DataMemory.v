@@ -10,7 +10,8 @@ input wire Clock,
 output wire[15:0] ReadData
 );
 
-reg[7:0] dataMem[0:127];
+reg[7:0] dataMem[127:0];
+//radhitja mundet mu kan gabim!!
 
 initial
 $readmemb("dataMemory.mem", dataMem);
@@ -22,8 +23,8 @@ begin
     if(MemWrite) 
         begin
             //bigEndian
-            dataMem[Address + 32'd0] <= WriteData[15:8];
-            dataMem[Address + 32'd1] <= WriteData[7:0];
+            dataMem[Address + 16'd0] <= WriteData[15:8];
+            dataMem[Address + 16'd1] <= WriteData[7:0];
            end
 end
 
@@ -35,8 +36,8 @@ $writememb("dataMemory.mem", dataMem);
 end
 
  
- assign ReadData[15:8] = dataMem[Address + 32'd0];
- assign ReadData[7:0] = dataMem[Address + 32'd1];
+ assign ReadData[15:8] = dataMem[Address + 16'd0];
+ assign ReadData[7:0] = dataMem[Address + 16'd1];
 endmodule
 
 

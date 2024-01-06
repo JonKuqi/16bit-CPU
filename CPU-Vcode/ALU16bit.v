@@ -59,8 +59,6 @@ assign Overflow = COUT[14] ^ CarryOut;
  
  //ideja, shamt behet si hyrje edhe ekziston ni case: per i cili merr ALUCtrl dhe nese esshte i njejte me ge SLL dhe SRA 
  //mbishkruhet rezultati
-    
-    
 endmodule
 
 
@@ -68,10 +66,9 @@ endmodule
 //Testimi
 
 
-`timescale 1ns / 1ps
+
 
 `timescale 1ns / 1ps
-
 module testALU16bit();
 
   reg [15:0]A, B;

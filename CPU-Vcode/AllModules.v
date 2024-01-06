@@ -1,5 +1,6 @@
 `timescale 1ns / 1ps
-//--------------------------------------------------------------------------------------
+
+
 module ALU1(
     input A,
     input B,
@@ -29,9 +30,13 @@ module ALU1(
    
    Mbledhesi m1(mA, mB, CIN, mb_teli, CarryOut);
    
- 
+   //mux4ne1 MuxiKryesor(dhe_teli, ose_teli, mb_teli, Less, Op, Result);
 mux5ne1 MuxiKryesor(dhe_teli, slt_teli, ose_teli, xor_teli, mb_teli, Less, Op, Result); 
 
+	
+	//duhet mu ba ni Mux8ne1(dhe_teli, ose_teli, mb_teli, less, op, Result);
+	//ky multiplekser ne baze te op code i cili te na eshte 3 bitesh zgjedh se cilat nga keto tela do aktivizohen
+	//sh. 000 and, 010 XOR kto tre jan bitat e fundit te ALUCtrl
     
 endmodule
 
@@ -96,7 +101,8 @@ assign Overflow = COUT[14] ^ CarryOut;
     
     
 endmodule
-//--------------------------------------------------------------------------------------
+
+
 module ALUControl(
 input [1:0] ALUOp,
 input [1:0] Funct,
@@ -153,7 +159,7 @@ begin
      endcase
  end
 endmodule
-//--------------------------------------------------------------------------------------
+
 module CU(
     input [3:0] OPCODE, //HYRJA NGA D_OUT_1
     output reg RegDst, //DALJET E CU, CU_OUT_x
@@ -275,7 +281,7 @@ case(OPCODE)
 4'b0010: //SLL dhe SRA
     begin
     RegDst = 1;
-    AluSrc = 0;
+    AluSrc = 1'bX;
 	MemToReg = 0;
 	RegWrite = 1;
 	MemRead = 0;
@@ -289,15 +295,15 @@ endcase
 end
 
 endmodule
-  
-  
-//--------------------------------------------------------------------------------------
+
+
+//Hyrje ne CPU - CLock CPU_IN_1
 module CPU(input Clock);
 
 //TELAT E BRENDSHEM TE CPU, SHIH CPU.PDF
 wire [3:0] opcode; //D_OUT_1
 //CU_OUT_x
-wire RegDst, Jump, Branch, MemRead, MemWrite, RegWrite, MemToReg, ALUSrc;
+wire RegDst, Branch, MemRead, MemWrite, RegWrite, MemToReg, ALUSrc;
 wire [1:0] ALUOp;
 
 //inicializimi i Datapath   
@@ -325,44 +331,7 @@ RegWrite
 );
 
 endmodule
-  
-//--------------------------------------------------------------------------------------  
-module RegisterFile(
-input wire[1:0] RS,
-input wire[1:0] RT,
-input wire[1:0] RD,
-input wire[15:0] WriteData,
-input wire RegWrite,
-input wire Clock,
-//pasi element qe kena me shkru n ta ka clock
-output wire[15:0] ReadRS,
-output wire[15:0] ReadRT
-    );
-    
-reg[15:0] Registers[3:0];
-//16 regjista me ka 16 bit numri i bitve mas reg
 
-//Reseto te gjithe regjistrat ne 0
-integer i;
-initial 
-begin
-for(i=0;i<16;i=i+1)
-   Registers[i] <= 16'd0; 
-end
-
-//Shkruaj ne regjiter
-always @(posedge Clock)
-begin
-if(RegWrite) Registers[RD] <= WriteData;
-end
-
-//lexo regjistrat ReadData1, ReadData2
-//i qet ne dalje regjistrat rt dhe rs
-assign ReadRS = Registers[RS];
-assign ReadRT = Registers[RT];
-endmodule
-  
-//--------------------------------------------------------------------------------------  
 module DataMemory(
 input wire[15:0] Address,
 input wire[15:0] WriteData,
@@ -372,7 +341,8 @@ input wire Clock,
 output wire[15:0] ReadData
 );
 
-reg[7:0] dataMem[0:127];
+reg[7:0] dataMem[127:0];
+//radhitja mundet mu kan gabim!!
 
 initial
 $readmemb("dataMemory.mem", dataMem);
@@ -384,8 +354,8 @@ begin
     if(MemWrite) 
         begin
             //bigEndian
-            dataMem[Address + 32'd0] <= WriteData[15:8];
-            dataMem[Address + 32'd1] <= WriteData[7:0];
+            dataMem[Address + 16'd0] <= WriteData[15:8];
+            dataMem[Address + 16'd1] <= WriteData[7:0];
            end
 end
 
@@ -397,12 +367,12 @@ $writememb("dataMemory.mem", dataMem);
 end
 
  
- assign ReadData[15:8] = dataMem[Address + 32'd0];
- assign ReadData[7:0] = dataMem[Address + 32'd1];
-endmodule  
-  
-//--------------------------------------------------------------------------------------  
-  module Datapath(
+ assign ReadData[15:8] = dataMem[Address + 16'd0];
+ assign ReadData[7:0] = dataMem[Address + 16'd1];
+endmodule
+
+
+module Datapath(
 input Clock, //HYRJE NGA CPU - TELI CPU_IN_1
 input RegDst, Branch, MemRead, 
 MemWrite, RegWrite, MemToReg, ALUSrc, //HYRJET NGA CU - TELAT CU_OUT_x
@@ -468,10 +438,7 @@ assign mux_ALU = (ALUSrc == 1'b1) ? Zgjerimi : readData2;
 ALUControl AC(ALUOp, instruction[1:0], instruction[15:12], ALUCtrl); 
 
 //inicializimi i ALU (T7, T10, T19[3], T19[2], T19[1:0], T20, T11, T21, T22)
-ALU16 ALU(readData1, mux_ALU, 0, ALUCtrl[3:0], zerof, ALU_Out, overflow, carryout);
-
-
-
+ALU16 ALU(readData1, mux_ALU, 0, ALUCtrl, zerof, ALU_Out, overflow, carryout);
 
 //inicializimi i Data Memory (T11, T8, CU_OUT_x, CU_OUT_x, CPU_IN_1, T13) 
 DataMemory DM(ALU_Out, readData2, MemWrite, MemRead, Clock, memToMux);
@@ -486,7 +453,7 @@ assign andMuxBranch = zerof & Branch;
 assign beqAddress = pc4 + shifter2beq; 
 
 //T3 - Teli qe del nga Mux M4 ne foto qe kontrollon nese kemi BEQ apo PC+4
-assign pcbeq = (andMuxBranch == 1'b1) ? beqAddress : pc4;
+assign pc_next = (andMuxBranch == 1'b1) ? beqAddress : pc4;
 
 
 
@@ -494,7 +461,8 @@ assign pcbeq = (andMuxBranch == 1'b1) ? beqAddress : pc4;
 assign opcode = instruction[15:12];
 
 endmodule
-  //--------------------------------------------------------------------------------------
+
+
 module InstructionMemory(
 input wire[15:0] PCAddress,
 output wire[15:0] Instruction);
@@ -510,12 +478,16 @@ $readmemb("instructionMemory.mem", instrMem);
 
 //dekoder
   assign Instruction[15:8] = instrMem[PCAddress];
-  assign Instruction[7:0] = instrMem[PCAddress + 32'd1];
+  assign Instruction[7:0] = instrMem[PCAddress + 16'd1];
 
 endmodule
 
 
-//--------------------------------------------------------------------------------------
+//E testuar, eshte korrekte
+//pjesa e testimit 
+
+
+
 module Mbledhesi(
     input A,
     input B,
@@ -527,9 +499,8 @@ module Mbledhesi(
     assign Shuma = A ^ B ^ CIN;
     assign COUT = CIN & A | CIN & B | A & B;
 endmodule
-  
- //-------------------------------------------------------------------------------------- 
-  module mux2ne1(
+
+module mux2ne1(
     input Hyrja0,
     input Hyrja1,
     input S,
@@ -539,8 +510,8 @@ endmodule
     assign Dalja = S ? Hyrja1 : Hyrja0;
 endmodule
 
-  //--------------------------------------------------------------------------------------
-  module mux5ne1(
+
+module mux5ne1(
     input oAND,
 	input oSLTI,
 	input oOR,
@@ -555,36 +526,38 @@ assign Dalja = AluCtrl[2] ? (AluCtrl[1] ?  Less : oADDSUB) : (AluCtrl[1] ? (AluC
 endmodule
 
 
+module RegisterFile(
+input wire[1:0] RS,
+input wire[1:0] RT,
+input wire[1:0] RD,
+input wire[15:0] WriteData,
+input wire RegWrite,
+input wire Clock,
+//pasi element qe kena me shkru n ta ka clock
+output wire[15:0] ReadRS,
+output wire[15:0] ReadRT
+    );
+    
+reg[15:0] Registers[3:0];
+//16 regjista me ka 16 bit numri i bitve mas reg
 
-
-
-
-
-
-//Testingu
-
-// Code your testbench here
-// or browse Examples
-`timescale 1ns / 1ps
-
-module cputest();
-
-
-reg Clock;
-
+//Reseto te gjithe regjistrat ne 0
 integer i;
-initial
+initial 
 begin
-for(i=0; i < 30; i=i+1) //30x nderro nga Clock 0 - 1, 30 tehe pozitive
-begin
-#10 Clock = 0;
-#10 Clock = 1;
+for(i=0;i<16;i=i+1)
+   Registers[i] <= 16'd0; 
 end
 
-#10 $finish;
+//Shkruaj ne regjiter
+always @(posedge Clock)
+begin
+if(RegWrite) Registers[RD] <= WriteData;
 end
 
-
-
-CPU cpu32(Clock);
+//lexo regjistrat ReadData1, ReadData2
+//i qet ne dalje regjistrat rt dhe rs
+assign ReadRS = Registers[RS];
+assign ReadRT = Registers[RT];
 endmodule
+
