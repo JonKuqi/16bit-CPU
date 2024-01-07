@@ -12,7 +12,7 @@ output [3:0] opcode //DALJE PER NE CU - TELI D_OUT_1
 
 //SHIKO FOTO DATAPATH.PDF
 reg[15:0] pc_initial; // Regjistri PC
-wire [15:0] pc_next, pc4, pcbeq; //TELAT: T1, T2, T3, T4
+wire [15:0] pc_next, pc2, pcbeq; //TELAT: T1, T2, T3, T4
 wire [15:0] instruction; //TELI T5
 wire [1:0] mux_regfile; //TELI T6
 wire[15:0] readData1, readData2, writeData, //TELAT T7-T9 
@@ -34,8 +34,9 @@ begin
 end
 
 //T2 - PC rritet per 2 (ne sistemet 16 biteshe) per te gjitha instruksionet pervec BEQ
-assign pc4 = pc_initial + 2; 
-
+//assign pc2 = pc_initial + 2; 
+Mbledhesi16bit(pc_initial, 16'b10, SUM, COUT);
+assign pc2 = SUM;
 
 
 //DUHET BERE NJE MBLEDHES 
@@ -80,7 +81,9 @@ assign writeData = (MemToReg == 1'b1) ? memToMux : ALU_Out;
 assign andMuxBranch = zerof & Branch;
 
 //T17, Teli qe mban adresen ne te cilen do te kercej programi kur kushti BEQ plotesohet
-assign beqAddress = pc4 + shifter2beq; 
+//assign beqAddress = pc2 + shifter2beq; 
+Mbledhesi16bit(pc2, shifter2beq, SUM, COUT);
+assign beqAddress = SUM;
 
 //T3 - Teli qe del nga Mux M4 ne foto qe kontrollon nese kemi BEQ apo PC+4
 assign pc_next = (andMuxBranch == 1'b1) ? beqAddress : pc4;
