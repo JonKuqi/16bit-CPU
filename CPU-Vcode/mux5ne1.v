@@ -34,18 +34,15 @@ assign Dalja = AluCtrl[2] ? (AluCtrl[1] ?  Less : oADDSUB) : (AluCtrl[1] ? (AluC
 endmodule
 
 
-//nga cspu 32 bit
-module mux4ne1(
+module mux2ne1(
     input Hyrja0,
     input Hyrja1,
-    input Hyrja2,
-    input Hyrja3,
-    input [1:0] S,
+    input S,
     output Dalja
     );
     
-    assign Dalja = S[1] ? (S[0] ? Hyrja3 : Hyrja2) : (S[0] ? Hyrja1 : Hyrja0);
-    
+    assign Dalja = S ? Hyrja1 : Hyrja0;
 endmodule
+
 
 

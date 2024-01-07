@@ -13,7 +13,8 @@ module CU(
     output reg[1:0] AluOp,
     output reg MemWrite,
     output reg AluSrc,
-    output reg RegWrite
+    output reg RegWrite,
+	output reg Shift
     );
     
     
@@ -32,6 +33,7 @@ case(OPCODE)
 	AluOp[1] = 1;
     AluOp[0] = 0;	
 	Branch =0;
+	Shift=0;
     end
 	
 4'b0001: //ADD dhe SUB
@@ -45,6 +47,7 @@ case(OPCODE)
 	AluOp[1] = 1;
     AluOp[0] = 0;	
 	Branch =0;
+	Shift=0;
     end
 	
 4'b1001: //ADDI
@@ -58,6 +61,7 @@ case(OPCODE)
 	AluOp[1] = 1;
     AluOp[0] = 1;	
 	Branch =0;
+	Shift=0;
     end
 	
 4'b1010: //SUBI
@@ -71,6 +75,7 @@ case(OPCODE)
 	AluOp[1] = 1;
     AluOp[0] = 1;	
 	Branch =0;
+	Shift=0;
     end	
 	
 4'b1011: //SLTI
@@ -84,6 +89,7 @@ case(OPCODE)
 	AluOp[1] = 1;
     AluOp[0] = 1;	
 	Branch =0;
+	Shift=0;
     end	
 	
 4'b1100: //LW
@@ -97,6 +103,7 @@ case(OPCODE)
 	AluOp[1] = 0;
     AluOp[0] = 0;	
 	Branch =0;
+	Shift=0;
     end	
 4'b1101: //SW
     begin
@@ -109,6 +116,7 @@ case(OPCODE)
 	AluOp[1] = 0;
     AluOp[0] = 0;	
 	Branch = 0;
+	Shift=0;
     end	
 4'b1111: //BEQ
     begin
@@ -121,6 +129,7 @@ case(OPCODE)
 	AluOp[1] = 0;
     AluOp[0] = 1;	
 	Branch = 1;
+	Shift=0;
     end
 4'b0010: //SLL dhe SRA
     begin
@@ -133,6 +142,7 @@ case(OPCODE)
 	AluOp[1] = 1;
     AluOp[0] = 0;	
 	Branch = 0;
+	Shift=1;
     end	
 endcase
 

@@ -17,7 +17,7 @@ wire [15:0] instruction; //TELI T5
 wire [1:0] mux_regfile; //TELI T6
 wire[15:0] readData1, readData2, writeData, //TELAT T7-T9 
 mux_ALU, ALU_Out, Zgjerimi, memToMux, //TELAT T10-T13
-shifter2beq, shifter2jump, branchAdderToMux, beqAddress, jumpAddress; //TELAT T14-T18 
+shifter2beq, branchAdderToMux, beqAddress, jumpAddress; //TELAT T14-T18 
 wire[3:0] ALUCtrl; //TELI T19
 wire zerof, overflow, carryout; // TELAT T20-T22
 wire andMuxBranch; //TELI T23
@@ -68,7 +68,7 @@ assign mux_ALU = (ALUSrc == 1'b1) ? Zgjerimi : readData2;
 ALUControl AC(ALUOp, instruction[1:0], instruction[15:12], ALUCtrl); 
 
 //inicializimi i ALU (T7, T10, T19[3], T19[2], T19[1:0], T20, T11, T21, T22)
-ALU16 ALU(readData1, mux_ALU, 0, ALUCtrl, zerof, ALU_Out, overflow, carryout);
+ALU16 ALU(readData1, mux_ALU, 0, ALUCtrl[3:0], zerof, ALU_Out, overflow, carryout);
 
 //inicializimi i Data Memory (T11, T8, CU_OUT_x, CU_OUT_x, CPU_IN_1, T13) 
 DataMemory DM(ALU_Out, readData2, MemWrite, MemRead, Clock, memToMux);

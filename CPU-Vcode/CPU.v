@@ -4,23 +4,20 @@
 
 
 
-//Hyrje ne CPU - CLock CPU_IN_1
+
 module CPU(input Clock);
 
-//TELAT E BRENDSHEM TE CPU, SHIH CPU.PDF
-wire [3:0] opcode; //D_OUT_1
-//CU_OUT_x
+
+wire [3:0] opcode;
 wire RegDst, Branch, MemRead, MemWrite, RegWrite, MemToReg, ALUSrc;
 wire [1:0] ALUOp;
 
-//inicializimi i Datapath   
 
 //Pa perfunduar!!
 Datapath DP
 (
 Clock,
-RegDst, Branch, MemRead, MemWrite, RegWrite, MemToReg, ALUSrc,
-ALUOp,
+RegDst, Branch, MemRead, MemWrite, RegWrite, MemToReg, ALUSrc, Shift, ALUOp,
 opcode
 );
 
@@ -34,7 +31,8 @@ MemToReg,
 ALUOp,
 MemWrite, 
 ALUSrc,
-RegWrite
+RegWrite,
+Shift
 );
 
 endmodule

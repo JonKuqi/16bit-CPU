@@ -51,9 +51,9 @@ begin
 	
        case(opcode)
 		4'b1001:
-			 ALUCtrl = 4'b0101; //ADDI
+			 ALUCtrl = 4'b0100; //ADDI
 		4'b1010:
-			 ALUCtrl = 4'b1101; //SUBI
+			 ALUCtrl = 4'b1100; //SUBI
 		4'b1011:
 			 ALUCtrl = 4'b0001; //SLTI
 		

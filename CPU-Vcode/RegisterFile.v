@@ -42,6 +42,7 @@ endmodule
 
 //Testimi ne rregull
 
+
 module RegisterFile_Test();
   
   reg[1:0] RS, RT, RD;
@@ -53,16 +54,16 @@ module RegisterFile_Test();
     $monitor("RS=%b, RT=%b, RD=%b, RegWrite=%b, Clock=%b, WriteData=%d, ReadRS=%d, ReadRT=%d", RS, RT, RD, RegWrite, Clock, WriteData, ReadRS, ReadRT);
   initial
     begin
-      $dumpfile("dump.vcd");
-      $dumpvars;
+     
+    
       #0 Clock=1'b0;
-      #5 RD=2'd4; WriteData = 15'd5; RegWrite=1'b1;
+      #5 RD=2'd3; WriteData = 16'd5; RegWrite=1'b1;
       #5 Clock=1'b1;
       #5 Clock=1'b0; RegWrite= 1'b1;
-      #5 RD=2'd2; WriteData = 15'd7; RegWrite=1'b1;
+      #5 RD=2'd2; WriteData = 16'd7; RegWrite=1'b1;
       #5 Clock=1'b1;
       #5 Clock=1'b0; RegWrite=0;
-      #5 RS=2'd4; RT=2'd2;
+      #5 RS=2'd3; RT=2'd2;
       #5 $finish;
     end
   

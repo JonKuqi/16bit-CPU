@@ -84,16 +84,17 @@ initial
 initial
 begin
 //AND
-#0 A=16'd10; B=16'd10; AInvert=1'b0; Op=4'b0100; //ADD
-#10 A=16'd10; B=16'd10; AInvert=1'b0; Op=4'b1100; //SUB
+#0 A=16'd100; B=16'd85; AInvert=1'b0; Op=4'b0100; //ADD
+#10 A=16'd100; B=16'd95; AInvert=1'b0; Op=4'b1100; //SUB
 #10 A=16'b1001001001011111; B=16'b1001001001011111; AInvert=1'b0; Op=4'b0000;  //AND
+ #10 A=16'b1001001001011111; B=16'b0000000000000000; AInvert=1'b0; Op=4'b0010;
+  #10 A=16'b1001001001011111; B=16'b1001001001011111; AInvert=1'b0; Op=4'b0011;
 #10 $finish; 
 end
 
   ALU16 ALUTest(A, B, AInvert, Op, Zero, Result, Overflow, CarryOut);
 
 endmodule
-
 
 
   
