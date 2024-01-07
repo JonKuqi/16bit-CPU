@@ -479,7 +479,7 @@ reg[7:0] instrMem[127:0];
 //me ka 4 bit
 //lexohen nga jashte
 initial
-$readmemb("instructionMemory.mem", instrMem);
+$readmemb("instructionMemory1.mem", instrMem);
 //me b mas readmem pasi file i shkrum ne binar
 
 
