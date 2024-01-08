@@ -35,7 +35,7 @@ begin
 end
 
 //assign pc2 = pc_initial + 2; 
-Mbledhesi16bit(pc_initial, 16'b10, SUM, COUT);
+Mbledhesi16bit MbledhesiPC(pc_initial, 16'b10, SUM, COUT);
 assign pc2 = SUM;
 
 assign shifter2beq = {{7{instruction[7]}}, instruction[7:0], 1'b0}; // tu e shumzu me dy
@@ -72,7 +72,7 @@ assign writeData = (MemToReg == 1'b1) ? memToMux : mux_AluShift;
 assign andBranch = zerof & Branch;
 
 //assign beqAddress = pc2 + shifter2beq; 
-Mbledhesi16bit(pc2, shifter2beq, SUM, COUT);
+Mbledhesi16bit MbledhesiBeq(pc2, shifter2beq, SUM, COUT);
 assign beqAddress = SUM;
 
 assign pc_next = (andBranch == 1'b1) ? beqAddress : pc2;
