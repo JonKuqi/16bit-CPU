@@ -6,7 +6,7 @@ input Clock,
 input RegDst, Branch, MemRead, 
 MemWrite, RegWrite, MemToReg, ALUSrc, Shift,
 input [1:0] ALUOp, 
-output [3:0] opcode 
+output [3:0] opcode    
 );
 
 
@@ -15,7 +15,7 @@ wire [15:0] pc_next, pc2, pcbeq;
 wire [15:0] instruction;
 
 
-wire [1:0] mux_RtRd; //
+wire [1:0] mux_RtRd; 
 wire[15:0] readData1, readData2, writeData, 
 mux_ALU_RtImmediate, ALU_Rezultati, ZgjerimiImediates, memToMux, 
 shifter2beq, branchAdderToMux, beqAddress, shiftingResult, mux_AluShift; 
