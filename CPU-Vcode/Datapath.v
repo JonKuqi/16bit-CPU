@@ -5,22 +5,24 @@
 module Datapath(
 input Clock, //HYRJE NGA CPU - TELI CPU_IN_1
 input RegDst, Branch, MemRead, 
-MemWrite, RegWrite, MemToReg, ALUSrc, //HYRJET NGA CU - TELAT CU_OUT_x
-input [1:0] ALUOp, //HYRJE NGA CU - TELAT CU_OUT_x
-output [3:0] opcode //DALJE PER NE CU - TELI D_OUT_1
+MemWrite, RegWrite, MemToReg, ALUSrc, Shift,
+input [1:0] ALUOp, 
+output [3:0] opcode 
 );
 
-//SHIKO FOTO DATAPATH.PDF
-reg[15:0] pc_initial; // Regjistri PC
-wire [15:0] pc_next, pc4, pcbeq; //TELAT: T1, T2, T3, T4
-wire [15:0] instruction; //TELI T5
-wire [1:0] mux_regfile; //TELI T6
-wire[15:0] readData1, readData2, writeData, //TELAT T7-T9 
-mux_ALU, ALU_Out, Zgjerimi, memToMux, //TELAT T10-T13
-shifter2beq, branchAdderToMux, beqAddress, jumpAddress; //TELAT T14-T18 
-wire[3:0] ALUCtrl; //TELI T19
-wire zerof, overflow, carryout; // TELAT T20-T22
-wire andMuxBranch; //TELI T23
+
+reg[15:0] pc_initial; 
+wire [15:0] pc_next, pc2, pcbeq; 
+wire [15:0] instruction;
+
+
+wire [1:0] mux_RtRd; //
+wire[15:0] readData1, readData2, writeData, 
+mux_ALU_RtImmediate, ALU_Rezultati, ZgjerimiImediates, memToMux, 
+shifter2beq, branchAdderToMux, beqAddress, shiftingResult, mux_AluShift; 
+wire[3:0] ALUCtrl; 
+wire zerof, overflow, carryout;
+wire andBranch; 
 
 initial
 begin
