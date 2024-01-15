@@ -91,3 +91,7 @@ assign pc_next = (andMuxBranch == 1'b1) ? beqAddress : pc4;
 assign opcode = instruction[15:12];
 
 endmodule
+
+
+
+//
