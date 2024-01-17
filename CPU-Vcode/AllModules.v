@@ -97,23 +97,30 @@ module ALU1(
    wire JoA, JoB, mA, mB, dhe_teli, ose_teli, mb_teli, xor_teli, slt_teli, Bneg; 
    //mb teli -> teli i mbledhjes
    
+   
+   
    assign JoA = ~A;
    assign JoB = ~B;
-   assign Bneg = (Op == 3'b001) ? 1'b1 : BInvert;
-
+  
+   assign Bneg = (Op == 3'b001) ? 1'b1 : BInvert; 
+   
    mux2ne1 muxA(A, JoA, AInvert, mA);
-   mux2ne1 muxB(B, JoB, BInvert, mB);
+  mux2ne1 muxB(B, JoB, Bneg, mB);
    
    
    assign dhe_teli = mA & mB;
    assign ose_teli = mA | mB;
    assign xor_teli = mA ^ mB;
-   assign slt_teli = 0;
    
-   Mbledhesi m1(mA, mB, CIN, mb_teli, CarryOut);
+   
+  Mbledhesi m1(mA, mB, CIN, mb_teli, CarryOut);
+   
+   
+   //1 eshte B negate mdoket pasi CIN=Bnefate qdo here kemi zbritje
+   //Mbledhesi m2(mA, JoB, 1, slt_teli, CarryOut);
    
    //mux4ne1 MuxiKryesor(dhe_teli, ose_teli, mb_teli, Less, Op, Result);
-mux5ne1 MuxiKryesor(dhe_teli, slt_teli, ose_teli, xor_teli, mb_teli, Less, Op, Result); 
+  mux5ne1 MuxiKryesor(dhe_teli, mb_teli, ose_teli, xor_teli, mb_teli, Less, Op, Result); 
 
 	
 	//duhet mu ba ni Mux8ne1(dhe_teli, ose_teli, mb_teli, less, op, Result);
@@ -128,17 +135,20 @@ module ALU16(
     input AInvert,
     input [3:0] Op,
     output Zero,
-    output [15:0] FinalResult,
+  output [15:0] FinalResult,
     output Overflow,
     output CarryOut
     );
 	
+	
+	
+
 //CIN edhe Bin gjeth bashk po shkojn edhe e bajm ni bNegate t dyjat me ni ven
 // less vjen nga set
     wire BNegate;
     wire [14:0] COUT;
-      wire [15:0]Result;
-      wire [15:0] slti_teli;
+  wire [15:0] slti_teli;
+  wire [15:0]Result;
     //LIDH 16 ALU 1-biteshe
 	//pasi cout varet nga qdo alu, less ne qdo alu brenda eshte zero 
   
@@ -174,8 +184,12 @@ assign Zero = ~(Result[0] | Result[1] |
                 Result[14] | Result[15] ); 
                     
 assign Overflow = COUT[14] ^ CarryOut;
- assign slti_teli = {{15{1'b0}}, Result[15]};
+  
+  
+  assign slti_teli = {{15{1'b0}}, Result[15]};
    assign FinalResult = (Op == 4'b0001) ? slti_teli : Result;  
+  
+                    
 	  
   //Overflow nese dy numra pozitiv jen mledh edhe ka dalnegativ, edhe kur dy numra negativ jen mledh ka dal pozitiv, veq do dy raste si veqori t komplementit te 2shit
   
@@ -183,7 +197,9 @@ assign Overflow = COUT[14] ^ CarryOut;
  
  //ideja, shamt behet si hyrje edhe ekziston ni case: per i cili merr ALUCtrl dhe nese esshte i njejte me ge SLL dhe SRA 
  //mbishkruhet rezultati
+ 
 endmodule
+
 
 module ALUControl(
 input [1:0] ALUOp,
