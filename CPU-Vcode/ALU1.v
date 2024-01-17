@@ -18,6 +18,9 @@ module ALU1(
    
    assign JoA = ~A;
    assign JoB = ~B;
+
+  
+   assign Bneg = (Op == 3'b001) ? 1'b1 : BInvert; 
    
    mux2ne1 muxA(A, JoA, AInvert, mA);
    mux2ne1 muxB(B, JoB, BInvert, mB);

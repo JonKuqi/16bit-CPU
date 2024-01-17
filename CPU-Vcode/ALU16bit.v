@@ -17,6 +17,7 @@ module ALU16(
 // less vjen nga set
     wire BNegate;
     wire [14:0] COUT;
+    wire [15:0] slti_teli;
     //LIDH 16 ALU 1-biteshe
 	//pasi cout varet nga qdo alu, less ne qdo alu brenda eshte zero 
   
@@ -52,7 +53,10 @@ assign Zero = ~(Result[0] | Result[1] |
                 Result[14] | Result[15] ); 
                     
 assign Overflow = COUT[14] ^ CarryOut;
-	  
+	  assign slti_teli = {{15{1'b0}}, Result[15]};
+   assign FinalResult = (Op == 4'b0001) ? slti_teli : Result;  
+  
+
   //Overflow nese dy numra pozitiv jen mledh edhe ka dalnegativ, edhe kur dy numra negativ jen mledh ka dal pozitiv, veq do dy raste si veqori t komplementit te 2shit
   
  //Carry in dhe carry ou nuk perputhen pra kemi overflow
