@@ -8,7 +8,7 @@ module ALU16(
     input AInvert,
     input [3:0] Op,
     output Zero,
-    output [15:0] Result,
+    output [15:0] FinalResult,
     output Overflow,
     output CarryOut
     );
@@ -18,6 +18,8 @@ module ALU16(
     wire BNegate;
     wire [14:0] COUT;
     wire [15:0] slti_teli;
+    
+  wire [15:0]Result;
     //LIDH 16 ALU 1-biteshe
 	//pasi cout varet nga qdo alu, less ne qdo alu brenda eshte zero 
   
