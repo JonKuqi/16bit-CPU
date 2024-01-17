@@ -1,7 +1,4 @@
 `timescale 1ns / 1ps
-
-//komponenta eshte perfuduar dhe testuar, file testimit me poshte.
-
 module InstructionMemory(
 input wire[15:0] PCAddress,
 output wire[15:0] Instruction);
@@ -20,6 +17,15 @@ $readmemb("instructionMemory.mem", instrMem);
   assign Instruction[7:0] = instrMem[PCAddress + 16'd1];
 
 endmodule
+
+
+
+
+
+
+
+
+
 
 
 //E testuar, eshte korrekte

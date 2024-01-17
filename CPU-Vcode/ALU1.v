@@ -13,7 +13,7 @@ module ALU1(
     output CarryOut
     );
     
-   wire JoA, JoB, mA, mB, dhe_teli, ose_teli, mb_teli, xor_teli, slt_teli; 
+   wire JoA, JoB, mA, mB, dhe_teli, ose_teli, mb_teli, xor_teli, slt_teli, Bneg; 
    //mb teli -> teli i mbledhjes
    
    assign JoA = ~A;

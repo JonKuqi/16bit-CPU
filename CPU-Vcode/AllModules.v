@@ -35,7 +35,7 @@ begin
 end
 
 //assign pc2 = pc_initial + 2; 
-Mbledhesi16bit MbledhesiPC(pc_initial, 16'b10, SUM, COUT);
+Mbledhesi16bit mbledhesiPC (pc_initial,16'b10,SUM,COUT);
 assign pc2 = SUM;
 
 assign shifter2beq = {{7{instruction[7]}}, instruction[7:0], 1'b0}; // tu e shumzu me dy
@@ -72,7 +72,7 @@ assign writeData = (MemToReg == 1'b1) ? memToMux : mux_AluShift;
 assign andBranch = zerof & Branch;
 
 //assign beqAddress = pc2 + shifter2beq; 
-Mbledhesi16bit MbledhesiBeq(pc2, shifter2beq, SUM, COUT);
+Mbledhesi16bit mbledhesiBeq (pc2,shifter2beq,SUM,COUT);
 assign beqAddress = SUM;
 
 assign pc_next = (andBranch == 1'b1) ? beqAddress : pc2;
@@ -94,12 +94,13 @@ module ALU1(
     output CarryOut
     );
     
-   wire JoA, JoB, mA, mB, dhe_teli, ose_teli, mb_teli, xor_teli, slt_teli; 
+   wire JoA, JoB, mA, mB, dhe_teli, ose_teli, mb_teli, xor_teli, slt_teli, Bneg; 
    //mb teli -> teli i mbledhjes
    
    assign JoA = ~A;
    assign JoB = ~B;
-   
+   assign Bneg = (Op == 3'b001) ? 1'b1 : BInvert;
+
    mux2ne1 muxA(A, JoA, AInvert, mA);
    mux2ne1 muxB(B, JoB, BInvert, mB);
    
@@ -127,7 +128,7 @@ module ALU16(
     input AInvert,
     input [3:0] Op,
     output Zero,
-    output [15:0] Result,
+    output [15:0] FinalResult,
     output Overflow,
     output CarryOut
     );
@@ -136,6 +137,8 @@ module ALU16(
 // less vjen nga set
     wire BNegate;
     wire [14:0] COUT;
+      wire [15:0]Result;
+      wire [15:0] slti_teli;
     //LIDH 16 ALU 1-biteshe
 	//pasi cout varet nga qdo alu, less ne qdo alu brenda eshte zero 
   
@@ -171,6 +174,8 @@ assign Zero = ~(Result[0] | Result[1] |
                 Result[14] | Result[15] ); 
                     
 assign Overflow = COUT[14] ^ CarryOut;
+ assign slti_teli = {{15{1'b0}}, Result[15]};
+   assign FinalResult = (Op == 4'b0001) ? slti_teli : Result;  
 	  
   //Overflow nese dy numra pozitiv jen mledh edhe ka dalnegativ, edhe kur dy numra negativ jen mledh ka dal pozitiv, veq do dy raste si veqori t komplementit te 2shit
   

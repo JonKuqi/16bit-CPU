@@ -1,7 +1,3 @@
-
-//Komponenta perfunduar dhe testuar!
-
-// Code your design here
 module RegisterFile(
 input wire[1:0] RS,
 input wire[1:0] RT,
@@ -36,6 +32,14 @@ end
 assign ReadRS = Registers[RS];
 assign ReadRT = Registers[RT];
 endmodule
+
+
+
+
+
+
+
+
 
 
 
