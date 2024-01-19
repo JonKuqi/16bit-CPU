@@ -25,7 +25,7 @@ wire andBranch;
 
 initial
 begin
-    pc_initial = 16'd10; //inicimi fillestar adresa 10
+    pc_initial = 16'd9; //inicimi fillestar adresa 9
 end
 
 always@(posedge Clock)
@@ -502,7 +502,7 @@ reg[7:0] instrMem[127:0];
 //me ka 4 bit
 //lexohen nga jashte
 initial
-$readmemb("instructionMemory1.mem", instrMem);
+$readmemb("instructionMemory.mem", instrMem);
 //me b mas readmem pasi file i shkrum ne binar
 
 
