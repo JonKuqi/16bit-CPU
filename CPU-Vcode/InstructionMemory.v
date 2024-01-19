@@ -19,6 +19,15 @@ $readmemb("instructionMemory.mem", instrMem);
 endmodule
 
 
+
+
+
+
+
+
+
+
+
 //E testuar, eshte korrekte
 //pjesa e testimit 
 

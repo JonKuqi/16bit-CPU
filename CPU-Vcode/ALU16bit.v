@@ -69,6 +69,26 @@ assign Overflow = COUT[14] ^ CarryOut;
  //mbishkruhet rezultati
  
 endmodule
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 5def7d9f9e9a09db433e6b413c68b72e71db85eb
 //Testimi
 
 
