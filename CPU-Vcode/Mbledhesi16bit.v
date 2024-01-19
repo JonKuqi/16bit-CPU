@@ -28,24 +28,6 @@ Mbledhesi m16 (A[15],B[15],carry[14],SUM[15],COUT);
 
 endmodule
 
-<<<<<<< HEAD
-=======
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> 5def7d9f9e9a09db433e6b413c68b72e71db85eb
 //Testimi
 
 module testMbledhesi16bit();

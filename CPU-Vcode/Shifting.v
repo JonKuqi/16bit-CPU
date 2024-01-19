@@ -21,15 +21,6 @@ module Shifting(
   
 endmodule
 
-
-
-
-
-
-
-
-
-
 //Testing
 
 

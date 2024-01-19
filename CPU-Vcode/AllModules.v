@@ -25,7 +25,7 @@ wire andBranch;
 
 initial
 begin
-    pc_initial = 16'd10; //inicimi fillestar adresa 10
+    pc_initial = 16'd9; //inicimi fillestar adresa 10
 end
 
 always@(posedge Clock)
