@@ -1,7 +1,4 @@
 `timescale 1ns / 1ps
-
-//komponenta eshte perfuduar dhe testuar, file testimit me poshte.
-
 module InstructionMemory(
 input wire[15:0] PCAddress,
 output wire[15:0] Instruction);

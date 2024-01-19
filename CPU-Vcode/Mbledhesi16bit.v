@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 module Mbledhesi16bit(
 input [15:0] A,
 input [15:0] B,
@@ -26,8 +27,6 @@ Mbledhesi m15 (A[14],B[14],carry[13],SUM[14],carry[14]);
 Mbledhesi m16 (A[15],B[15],carry[14],SUM[15],COUT);
 
 endmodule
-
-
 
 //Testimi
 

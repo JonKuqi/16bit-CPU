@@ -1,10 +1,4 @@
 `timescale 1ns / 1ps
-
-//PA testuar!!
-
-
-
-
 module CPU(input Clock);
 
 
@@ -14,7 +8,7 @@ wire [1:0] ALUOp;
 
 
 //Pa perfunduar!!
-Datapath DP
+DatapathV2 DP
 (
 Clock,
 RegDst, Branch, MemRead, MemWrite, RegWrite, MemToReg, ALUSrc, Shift, ALUOp,
@@ -36,3 +30,4 @@ Shift
 );
 
 endmodule
+

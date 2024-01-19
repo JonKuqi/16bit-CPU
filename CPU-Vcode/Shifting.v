@@ -1,18 +1,23 @@
 `timescale 1ns / 1ps
 
+`timescale 1ns / 1ps
+
 module Shifting(
-  input[15:0] Hyrja,
+  input signed[15:0] Hyrja,
   input[3:0] Shamt,
   input[1:0] Funct,
-  output reg[15:0] Result
+  output signed[15:0] Result
 );
   
-  always @*
-    case(Funct)
-      2'b00: Result = Hyrja << Shamt;
-      
-      2'b01: Result = Hyrja >> Shamt;
-    endcase
+  
+  wire signed[15:0] sll,sra;
+  
+  assign sll = Hyrja <<< Shamt; 
+  assign sra = Hyrja >>> Shamt;
+
+  
+  assign Result = (Funct == 2'b00) ? sll : sra;
+  
   
 endmodule
 

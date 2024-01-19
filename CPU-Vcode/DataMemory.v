@@ -1,6 +1,4 @@
 `timescale 1ns / 1ps
-//Komponenta e kryer dhe e testuar, file i testimit me poshte.
-
 module DataMemory(
 input wire[15:0] Address,
 input wire[15:0] WriteData,
@@ -39,7 +37,6 @@ end
  assign ReadData[15:8] = dataMem[Address + 16'd0];
  assign ReadData[7:0] = dataMem[Address + 16'd1];
 endmodule
-
 
 //Testimni
 

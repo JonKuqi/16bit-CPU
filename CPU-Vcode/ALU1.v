@@ -1,6 +1,4 @@
 `timescale 1ns / 1ps
-
-
 module ALU1(
     input A,
     input B,
@@ -13,25 +11,33 @@ module ALU1(
     output CarryOut
     );
     
-   wire JoA, JoB, mA, mB, dhe_teli, ose_teli, mb_teli, xor_teli, slt_teli; 
+   wire JoA, JoB, mA, mB, dhe_teli, ose_teli, mb_teli, xor_teli, slt_teli, Bneg; 
    //mb teli -> teli i mbledhjes
+   
+   
    
    assign JoA = ~A;
    assign JoB = ~B;
+  
+   assign Bneg = (Op == 3'b001) ? 1'b1 : BInvert; 
    
    mux2ne1 muxA(A, JoA, AInvert, mA);
-   mux2ne1 muxB(B, JoB, BInvert, mB);
+  mux2ne1 muxB(B, JoB, Bneg, mB);
    
    
    assign dhe_teli = mA & mB;
    assign ose_teli = mA | mB;
    assign xor_teli = mA ^ mB;
-   assign slt_teli = 0;
    
-   Mbledhesi m1(mA, mB, CIN, mb_teli, CarryOut);
+   
+  Mbledhesi m1(mA, mB, CIN, mb_teli, CarryOut);
+   
+   
+   //1 eshte B negate mdoket pasi CIN=Bnefate qdo here kemi zbritje
+   //Mbledhesi m2(mA, JoB, 1, slt_teli, CarryOut);
    
    //mux4ne1 MuxiKryesor(dhe_teli, ose_teli, mb_teli, Less, Op, Result);
-mux5ne1 MuxiKryesor(dhe_teli, slt_teli, ose_teli, xor_teli, mb_teli, Less, Op, Result); 
+  mux5ne1 MuxiKryesor(dhe_teli, mb_teli, ose_teli, xor_teli, mb_teli, Less, Op, Result); 
 
 	
 	//duhet mu ba ni Mux8ne1(dhe_teli, ose_teli, mb_teli, less, op, Result);
@@ -39,8 +45,6 @@ mux5ne1 MuxiKryesor(dhe_teli, slt_teli, ose_teli, xor_teli, mb_teli, Less, Op, R
 	//sh. 000 and, 010 XOR kto tre jan bitat e fundit te ALUCtrl
     
 endmodule
-
-
 
 
 
@@ -95,5 +99,3 @@ end
   ALU1 ALUTest(A, B, CIN, AInvert, BInvert, LESS, Operation, Result, COUT);
 
 endmodule
-
-

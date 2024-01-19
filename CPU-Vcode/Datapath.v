@@ -1,6 +1,3 @@
-`timescale 1ns / 1ps
-
-
 module DatapathV2(
 input Clock, 
 input RegDst, Branch, MemRead, 
@@ -25,7 +22,7 @@ wire andBranch;
 
 initial
 begin
-    pc_initial = 16'd10; //inicimi fillestar adresa 10
+    pc_initial = 16'd9; //inicimi fillestar adresa 10
 end
 
 always@(posedge Clock)
@@ -34,8 +31,8 @@ begin
     
 end
 
-Mbledhesi16bit MbledhesiPC(pc_initial, 16'b10, SUM, COUT);
-assign pc2 = SUM;
+//assign pc2 = pc_initial + 2; 
+Mbledhesi16bit mbledhesiPC (pc_initial,16'b10,pc2,COUT);
 
 assign shifter2beq = {{7{instruction[7]}}, instruction[7:0], 1'b0}; // tu e shumzu me dy
 
@@ -70,8 +67,9 @@ assign writeData = (MemToReg == 1'b1) ? memToMux : mux_AluShift;
 
 assign andBranch = zerof & Branch;
 
-Mbledhesi16bit MbledhesiBeq(pc2, shifter2beq, SUM, COUT);
-assign beqAddress = SUM;
+//assign beqAddress = pc2 + shifter2beq; 
+Mbledhesi16bit mbledhesiBeq (pc2,shifter2beq,beqAddress,COUT);
+
 
 assign pc_next = (andBranch == 1'b1) ? beqAddress : pc2;
 

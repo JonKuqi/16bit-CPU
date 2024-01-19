@@ -1,9 +1,5 @@
 `timescale 1ns / 1ps
 
-//Perfunduar si komponente, Eshte testuar me sukses!
-
-`timescale 1ns / 1ps
-
 module CU(
     input [3:0] OPCODE, //HYRJA NGA D_OUT_1
     output reg RegDst, //DALJET E CU, CU_OUT_x
@@ -149,7 +145,6 @@ endcase
 end
 
 endmodule
-
 
 
 

@@ -1,4 +1,4 @@
-
+`timescale 1ns / 1ps
 //Komponenta perfunduar dhe testuar!
 
 // Code your design here
@@ -28,6 +28,7 @@ end
 //Shkruaj ne regjiter
 always @(posedge Clock)
 begin
+if(RD != 2'b00)
 if(RegWrite) Registers[RD] <= WriteData;
 end
 

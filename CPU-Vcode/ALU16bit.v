@@ -1,22 +1,24 @@
 `timescale 1ns / 1ps
-
-//Testuar me sukses!!
-
 module ALU16(
     input [15:0] A,
     input [15:0] B,
     input AInvert,
     input [3:0] Op,
     output Zero,
-    output [15:0] Result,
+  output [15:0] FinalResult,
     output Overflow,
     output CarryOut
     );
 	
+	
+	
+
 //CIN edhe Bin gjeth bashk po shkojn edhe e bajm ni bNegate t dyjat me ni ven
 // less vjen nga set
     wire BNegate;
     wire [14:0] COUT;
+  wire [15:0] slti_teli;
+  wire [15:0]Result;
     //LIDH 16 ALU 1-biteshe
 	//pasi cout varet nga qdo alu, less ne qdo alu brenda eshte zero 
   
@@ -52,6 +54,12 @@ assign Zero = ~(Result[0] | Result[1] |
                 Result[14] | Result[15] ); 
                     
 assign Overflow = COUT[14] ^ CarryOut;
+  
+  
+  assign slti_teli = {{15{1'b0}}, Result[15]};
+   assign FinalResult = (Op == 4'b0001) ? slti_teli : Result;  
+  
+                    
 	  
   //Overflow nese dy numra pozitiv jen mledh edhe ka dalnegativ, edhe kur dy numra negativ jen mledh ka dal pozitiv, veq do dy raste si veqori t komplementit te 2shit
   
@@ -59,12 +67,9 @@ assign Overflow = COUT[14] ^ CarryOut;
  
  //ideja, shamt behet si hyrje edhe ekziston ni case: per i cili merr ALUCtrl dhe nese esshte i njejte me ge SLL dhe SRA 
  //mbishkruhet rezultati
+ 
 endmodule
-
-
-
 //Testimi
-
 
 
 
@@ -78,18 +83,23 @@ module testALU16bit();
   wire Overflow, CarryOut, Zero;
 
 initial
-  $monitor("A=%b, B=%b, AInvert=%b, Op=%b, Result=%b, CarryOut=%b, Zero=%b, Overflow=%b" , A, B, AInvert, Op, Result, CarryOut, Zero, Overflow);
+  $monitor("A=%d, B=%d, AInvert=%b, Op=%b, Result=%d, CarryOut=%b, Zero=%b, Overflow=%b" , A, B, AInvert, Op, Result, CarryOut, Zero, Overflow);
 
 
 initial
 begin
 //AND
 #0 A=16'd100; B=16'd85; AInvert=1'b0; Op=4'b0100; //ADD
-#10 A=16'd100; B=16'd95; AInvert=1'b0; Op=4'b1100; //SUB
+#10 A=16'd100; B=16'd100; AInvert=1'b0; Op=4'b1100; //SUB
 #10 A=16'b1001001001011111; B=16'b1001001001011111; AInvert=1'b0; Op=4'b0000;  //AND
  #10 A=16'b1001001001011111; B=16'b0000000000000000; AInvert=1'b0; Op=4'b0010;
-  #10 A=16'b1001001001011111; B=16'b1001001001011111; AInvert=1'b0; Op=4'b0011;
+  
+
+  #10 A=16'b1001001001011111; B=16'b1001001001011111; AInvert=1'b0; Op=4'b1001;
+    //SLTI
+   #10 A=16'd8000; B=16'd500; AInvert=1'b0; Op=4'b0001;
 #10 $finish; 
+  
 end
 
   ALU16 ALUTest(A, B, AInvert, Op, Zero, Result, Overflow, CarryOut);
@@ -97,5 +107,19 @@ end
 endmodule
 
 
+module Shifting(
+  input[15:0] Hyrja,
+  input[3:0] Shamt,
+  input[1:0] Funct,
+  output reg[15:0] Result
+);
   
+  always @*
+    case(Funct)
+      2'b00: Result = Hyrja << Shamt;
+      
+      2'b01: Result = Hyrja >> Shamt;
+    endcase
+  
+endmodule
   
